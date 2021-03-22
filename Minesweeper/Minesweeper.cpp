@@ -6,6 +6,8 @@ Minesweeper::Minesweeper()
 	RedBombTexture.loadFromFile("Bomb.jpg");
 	GrayBombTexture.loadFromFile("Bomb2.jpg");
 
+	Flag.loadFromFile("Flag.jpg");
+
 	MainFont.loadFromFile("Oswald-Bold.ttf");
 
 	TopRectangle->setPosition(sf::Vector2f{ 5, 5 });
@@ -20,8 +22,7 @@ Minesweeper::Minesweeper()
 
 		for (int j = 0; j < 10; ++j)
 		{
-			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50,
-				sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
+			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
 		}
 	}
 }
@@ -36,6 +37,8 @@ void Minesweeper::MainLoop()
 	srand(static_cast<unsigned int>(time(NULL)));
 
 	sf::Event MainEvent;
+	//to do
+	TextButton Yes(152, 85, 250, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Tak", 30, &MainFont, sf::Color(0, 0, 0));
 
 	while (Window.isOpen())
 	{
@@ -49,11 +52,11 @@ void Minesweeper::MainLoop()
 			}
 		}
 
-		UpdateObjects();
+		//UpdateObjects();
 
 		Window.clear(sf::Color(61, 61, 61));
 		
-		DrawObjects();
+		//DrawObjects();
 
 		Window.display();
 	}
@@ -75,14 +78,13 @@ void Minesweeper::StartGame()
 
 		for (int j = 0; j < 10; ++j)
 		{
-			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50,
-				sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
+			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
 		}
 	}
 
 	PlantBombs();
 	
-	SetFieldsID();
+	//SetFieldsID();
 }
 
 void Minesweeper::PlantBombs()
@@ -103,7 +105,7 @@ void Minesweeper::PlantBombs()
 			x = { rand() % 10 };
 			y = { rand() % 10 };
 
-			for (std::pair<int, int> Numbers : Coordinates)
+			for (const auto& Numbers : Coordinates)
 			{
 				if (Numbers.first == x && Numbers.second == y)
 				{
@@ -119,7 +121,7 @@ void Minesweeper::PlantBombs()
 		Field[x][y]->SetID(10);
 	}
 }
-
+/*
 void Minesweeper::SetFieldsID()
 {
 	for (int i = 0; i < 10; ++i)
@@ -177,71 +179,74 @@ void Minesweeper::SetFieldsID()
 
 void Minesweeper::Move(int x, int y)
 {
-	if (Field[x][y]->GetID() >= 10)
+	if (!Field[x][y]->GetIsUnveiled())
 	{
-		Field[x][y]->SetIsUnveiled(true);
+		if (Field[x][y]->GetID() >= 10)
+		{
+			Field[x][y]->SetIsUnveiled(true);
 
-		Field[x][y]->setTexture(&RedBombTexture);
-		Field[x][y]->setFillColor(sf::Color::White);
+			Field[x][y]->setTexture(&RedBombTexture);
+			Field[x][y]->setFillColor(sf::Color::White);
 
-		GameStateTextField->SetString(L"PRZEGRANA");
+			GameStateTextField->SetString(L"PRZEGRANA");
 
-		GameState = { GAMESTATE::LOSE };
+			GameState = { GAMESTATE::LOSE };
 
-		return;
-	}
-	else if (Field[x][y]->GetID() != 0)
-	{
-		Field[x][y]->SetIsUnveiled(true);
-
-		Field[x][y]->setFillColor(sf::Color(149, 149, 149));
-		Field[x][y]->SetButtonText(30, &MainFont, std::to_string(Field[x][y]->GetID()), sf::Color(0, 0, 0));
-	}
-	else
-	{
-		if (!Field[x][y]->GetIsUnveiled())
+			return;
+		}
+		else if (Field[x][y]->GetID() != 0)
 		{
 			Field[x][y]->SetIsUnveiled(true);
 
 			Field[x][y]->setFillColor(sf::Color(149, 149, 149));
-
-			if (y + 1 <= 9)
+			Field[x][y]->SetButtonText(30, &MainFont, std::to_string(Field[x][y]->GetID()), sf::Color(0, 0, 0));
+		}
+		else
+		{
+			if (!Field[x][y]->GetIsUnveiled())
 			{
-				if (x - 1 >= 0)
+				Field[x][y]->SetIsUnveiled(true);
+
+				Field[x][y]->setFillColor(sf::Color(149, 149, 149));
+
+				if (y + 1 <= 9)
 				{
-					Move(x - 1, y + 1);
+					if (x - 1 >= 0)
+					{
+						Move(x - 1, y + 1);
+					}
+
+					Move(x, y + 1);
+
+					if (x + 1 <= 9)
+					{
+						Move(x + 1, y + 1);
+					}
 				}
 
-				Move(x, y + 1);
+				if (x - 1 >= 0)
+				{
+					Move(x - 1, y);
+				}
 
 				if (x + 1 <= 9)
 				{
-					Move(x + 1, y + 1);
-				}
-			}
-
-			if (x - 1 >= 0)
-			{
-				Move(x - 1, y);
-			}
-
-			if (x + 1 <= 9)
-			{
-				Move(x + 1, y);
-			}
-
-			if (y - 1 >= 0)
-			{
-				if (x - 1 >= 0)
-				{
-					Move(x - 1, y - 1);
+					Move(x + 1, y);
 				}
 
-				Move(x, y - 1);
-
-				if (x + 1 <= 9)
+				if (y - 1 >= 0)
 				{
-					Move(x + 1, y - 1);
+					if (x - 1 >= 0)
+					{
+						Move(x - 1, y - 1);
+					}
+
+					Move(x, y - 1);
+
+					if (x + 1 <= 9)
+					{
+						Move(x + 1, y - 1);
+					}
 				}
 			}
 		}
@@ -293,12 +298,12 @@ void Minesweeper::UpdateObjects()
 			}
 		}
 
-		if (ReturnButton->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+		if (ReturnButton->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 		{
 			GameState = { GAMESTATE::SELECTION };
 		}
 		
-		if (PlayAgainButton->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+		if (PlayAgainButton->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 		{
 			StartGame();
 		}
@@ -306,12 +311,12 @@ void Minesweeper::UpdateObjects()
 		break;
 
 	case GAMESTATE::MOVE:
-		if (PlayAgainButton->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+		if (PlayAgainButton->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 		{
 			StartGame();
 		}
 
-		if (ReturnButton->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+		if (ReturnButton->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 		{
 			GameState = { GAMESTATE::SELECTION };
 		}
@@ -322,9 +327,21 @@ void Minesweeper::UpdateObjects()
 			{
 				if (!Field[i][j]->GetIsUnveiled())
 				{
-					if (Field[i][j]->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+					if (Field[i][j]->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 					{
 						Move(i, j);
+					}
+
+					if (Field[i][j]->UpdateButton(Window) == BUTTONSTATE::RIGHTPUSHED)
+					{
+						if (!Field[i][j]->GetIsFlaged())
+						{
+							Field[i][j]->setTexture(&Flag);
+						}
+						else
+						{
+
+						}
 					}
 				}
 			}
@@ -333,25 +350,25 @@ void Minesweeper::UpdateObjects()
 		break;
 
 	case GAMESTATE::SELECTION:
-		if (EasyButton->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+		if (EasyButton->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 		{
 			AmountOfBombs = { 10 };
 			StartGame();
 		}
 
-		if (MediumButton->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+		if (MediumButton->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 		{
 			AmountOfBombs = { 15 };
 			StartGame();
 		}
 
-		if (HardButton->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+		if (HardButton->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 		{
 			AmountOfBombs = { 20 };
 			StartGame();
 		}
 
-		if (ExitButton->UpdateButton(Window) == BUTTONSTATE::ACTIVE)
+		if (ExitButton->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
 		{
 			Window.close();
 		}
@@ -426,4 +443,4 @@ void Minesweeper::DrawObjects()
 
 		break;
 	}
-}
+}*/

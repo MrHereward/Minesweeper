@@ -1,15 +1,22 @@
 #include "Button.h"
 
-Button::Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _ActiveColor)
-	: ButtonState(BUTTONSTATE::IDLE), IsUnveiled(false),
-	IdleColor(_IdleColor), HoverColor(_HoverColor), ActiveColor(_ActiveColor)
+Button::Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _LeftColor, sf::Color _RightColor, sf::Texture* _LeftTexture, sf::Texture* _RightTexture)
+	: ButtonState(BUTTONSTATE::IDLE), IsBlocked(false), IsAvailable(true),
+	IdleColor(_IdleColor), HoverColor(_HoverColor), LeftColor(_LeftColor), RightColor(_RightColor),
+	LeftTexture(_LeftTexture), RightTexture(_RightTexture)
 {
 	setPosition(sf::Vector2f{ x, y });
 	setSize(sf::Vector2f{ Width, Height });
+	setFillColor(IdleColor);
 }
 
 BUTTONSTATE Button::UpdateButton(sf::RenderWindow& Window)
 {
+	if (!IsAvailable || IsBlocked)
+	{
+		return ButtonState;
+	}
+
 	ButtonState = { BUTTONSTATE::IDLE };
 
 	if (sf::Mouse::getPosition(Window).x < getPosition().x + getLocalBounds().width &&
@@ -21,7 +28,12 @@ BUTTONSTATE Button::UpdateButton(sf::RenderWindow& Window)
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			ButtonState = { BUTTONSTATE::ACTIVE };
+			ButtonState = { BUTTONSTATE::LEFTPUSHED };
+		}
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		{
+			ButtonState = { BUTTONSTATE::RIGHTPUSHED };
 		}
 	}
 
@@ -30,18 +42,44 @@ BUTTONSTATE Button::UpdateButton(sf::RenderWindow& Window)
 	case BUTTONSTATE::IDLE:
 		setFillColor(IdleColor);
 
-		return BUTTONSTATE::IDLE;
+		break;
 
 	case BUTTONSTATE::HOVER:
 		setFillColor(HoverColor);
 
-		return BUTTONSTATE::HOVER;
+		break;
 
-	case BUTTONSTATE::ACTIVE:
-		setFillColor(ActiveColor);
+	case BUTTONSTATE::LEFTPUSHED:
+		if (LeftTexture)
+		{
+			setTexture(LeftTexture);
+		}
+		else
+		{
+			setFillColor(LeftColor);
+		}
 
-		return BUTTONSTATE::ACTIVE;
+		break;
+
+	case BUTTONSTATE::RIGHTPUSHED:
+		if (RightTexture)
+		{
+			setTexture(RightTexture);
+		}
+		else
+		{
+			setFillColor(RightColor);
+		}
+
+		break;
 	}
+
+	return ButtonState;
+}
+
+void Button::Draw(sf::RenderWindow& Window)
+{
+	Window.draw(*this);
 }
 
 void Button::SetID(int _ID)
@@ -54,41 +92,22 @@ int Button::GetID()
 	return ID;
 }
 
-void Button::SetIdleColor(sf::Color _IdleColor)
+void Button::SetIsAvailable(bool _IsAvailable)
 {
-	IdleColor = { _IdleColor };
+	IsAvailable = { IsAvailable };
 }
 
-void Button::SetHoverColor(sf::Color _HoverColor)
+bool Button::GetIsAvailable()
 {
-	HoverColor = { _HoverColor };
+	return IsAvailable;
 }
 
-void Button::SetActiveColor(sf::Color _ActiveColor)
+void Button::SetIsBlocked(bool _IsBlocked)
 {
-	ActiveColor = { _ActiveColor };
+	IsBlocked = { _IsBlocked };
 }
 
-void Button::SetIsUnveiled(bool _IsUnveiled)
+bool Button::GetIsBlocked()
 {
-	IsUnveiled = { _IsUnveiled };
-}
-
-bool Button::GetIsUnveiled()
-{
-	return IsUnveiled;
-}
-
-void Button::SetButtonText(int CharacterSize, sf::Font* MainFont, sf::String ButtonString, sf::Color TextColor)
-{
-	ButtonText.setString(ButtonString);
-	ButtonText.setCharacterSize(CharacterSize);
-	ButtonText.setFont(*MainFont);
-	ButtonText.setFillColor(TextColor);
-	ButtonText.setPosition(sf::Vector2f{ getPosition().x + 17, getPosition().y + 7 });
-}
-
-sf::Text Button::GetButtonText()
-{
-	return ButtonText;
+	return IsBlocked;
 }

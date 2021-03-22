@@ -6,9 +6,10 @@
 #include <vector>
 #include <string>
 #include "Button.h"
+#include "TextButton.h"
 #include "TextField.h"
 
-enum class GAMESTATE : char
+enum class GAMESTATE : unsigned char
 {
 	NOTSTARTED,
 	SELECTION,
@@ -22,35 +23,35 @@ class Minesweeper
 private:
 	Button*** Field;
 
-	Button* PlayAgainButton{ new Button(152, 85, 250, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
+	Button* PlayAgainButton{ new Button(152, 85, 250, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
 
-	Button* EasyButton{ new Button(175, 300, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
+	Button* EasyButton{ new Button(175, 300, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
 
-	Button* MediumButton{ new Button(175, 400, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
+	Button* MediumButton{ new Button(175, 400, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
 
-	Button* HardButton{ new Button(175, 500, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
+	Button* HardButton{ new Button(175, 500, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
 
-	Button* ExitButton{ new Button(175, 600, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
+	Button* ExitButton{ new Button(175, 600, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
 
-	Button* ReturnButton{ new Button(5, 5, 85, 35, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
+	Button* ReturnButton{ new Button(5, 5, 85, 35, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
 
-	TextField* PlayAgainTextField{ new TextField(L"Zagraj ponownie", 178, 90, 30, &MainFont, sf::Color(0, 0, 0)) };
+	//TextField* PlayAgainTextField{ new TextField(L"Zagraj ponownie", 178, 90, 30, &MainFont, sf::Color(0, 0, 0)) };
 
 	TextField* GameStateTextField{ new TextField(157, 20, 50, &MainFont, sf::Color(0, 0, 0)) };
 
 	TextField* MinesweeperTextField{ new TextField(L"Saper", 195, 25, 70, &MainFont, sf::Color(0, 0, 0)) };
 
-	TextField* DifficultyLevelTextField{ new TextField(L"Wybierz poziom trudnoœci:", 60, 200, 40, &MainFont, sf::Color(0, 0, 0)) };
+	//TextField* DifficultyLevelTextField{ new TextField(L"Wybierz poziom trudnoœci:", 60, 200, 40, &MainFont, sf::Color(0, 0, 0)) };
 
-	TextField* EasyTextField{ new TextField(L"£atwy", 240, 307, 30, &MainFont, sf::Color(0, 0, 0)) };
+	//TextField* EasyTextField{ new TextField(L"£atwy", 240, 307, 30, &MainFont, sf::Color(0, 0, 0)) };
 
-	TextField* MediumTextField{ new TextField(L"Œredni", 235, 407, 30, &MainFont, sf::Color(0, 0, 0)) };
+	//TextField* MediumTextField{ new TextField(L"Œredni", 235, 407, 30, &MainFont, sf::Color(0, 0, 0)) };
 
-	TextField* HardTextField{ new TextField(L"Trudny", 230, 507, 30, &MainFont, sf::Color(0, 0, 0)) };
+	//TextField* HardTextField{ new TextField(L"Trudny", 230, 507, 30, &MainFont, sf::Color(0, 0, 0)) };
 
-	TextField* ExitTextField{ new TextField(L"WyjdŸ", 240, 607, 30, &MainFont, sf::Color(0, 0, 0)) };
+	//TextField* ExitTextField{ new TextField(L"WyjdŸ", 240, 607, 30, &MainFont, sf::Color(0, 0, 0)) };
 
-	TextField* ReturnTextField{ new TextField(L"Powrót", 15, 10, 20, &MainFont, sf::Color(0, 0, 0)) };
+	//TextField* ReturnTextField{ new TextField(L"Powrót", 15, 10, 20, &MainFont, sf::Color(0, 0, 0)) };
 
 	sf::RenderWindow Window;
 
@@ -60,6 +61,8 @@ private:
 
 	sf::Texture RedBombTexture;
 	sf::Texture GrayBombTexture;
+
+	sf::Texture Flag;
 
 	int AmountOfBombs{};
 
@@ -76,14 +79,14 @@ public:
 
 	void PlantBombs();
 
-	void SetFieldsID();
+	//void SetFieldsID();
 
-	void Move(int x, int y);
+	//void Move(int x, int y);
 
-	void NonunveliedFields();
+	//void NonunveliedFields();
 
-	void UpdateObjects();
+	//void UpdateObjects();
 
-	void DrawObjects();
+	//void DrawObjects();
 
 };

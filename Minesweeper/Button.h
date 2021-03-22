@@ -2,49 +2,51 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
-enum class BUTTONSTATE : char
+enum class BUTTONSTATE : unsigned char
 {
 	IDLE,
 	HOVER,
-	ACTIVE
+	LEFTPUSHED,
+	RIGHTPUSHED
 };
 
 class Button : public sf::RectangleShape
 {
-private:
-	sf::Text ButtonText{};
+protected:
+	sf::Texture* LeftTexture;
+	sf::Texture* RightTexture;
 
 	sf::Color IdleColor;
 	sf::Color HoverColor;
-	sf::Color ActiveColor;
+	sf::Color LeftColor;
+	sf::Color RightColor;
 
 	int ID{};
 
 	BUTTONSTATE ButtonState;
 
-	bool IsUnveiled;
+	bool IsBlocked;
+	bool IsAvailable;
 
 public:
-	Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _ActiveColor);
+	Button() = delete;
+
+	Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _LeftColor, sf::Color _RightColor, sf::Texture* _LeftTexture = nullptr, sf::Texture* _RightTexture = nullptr);
+
+	virtual BUTTONSTATE UpdateButton(sf::RenderWindow& Window);
+
+	virtual void Draw(sf::RenderWindow& Window);
 
 	void SetID(int _ID);
 
 	int GetID();
 
-	void SetIdleColor(sf::Color _IdleColor);
+	void SetIsAvailable(bool _IsAvailable);
 
-	void SetHoverColor(sf::Color _HoverColor);
+	bool GetIsAvailable();
 
-	void SetActiveColor(sf::Color _ActiveColor);
+	void SetIsBlocked(bool _IsBlocked);
 
-	BUTTONSTATE UpdateButton(sf::RenderWindow& Window);
-
-	void SetIsUnveiled(bool _IsUnveiled);
-
-	bool GetIsUnveiled();
-
-	void SetButtonText(int CharacterSize, sf::Font* MainFont, sf::String ButtonString, sf::Color TextColor);
-
-	sf::Text GetButtonText();
+	bool GetIsBlocked();
 
 };

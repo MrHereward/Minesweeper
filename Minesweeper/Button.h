@@ -13,6 +13,8 @@ enum class BUTTONSTATE : unsigned char
 class Button : public sf::RectangleShape
 {
 protected:
+	sf::Text ButtonText{};
+
 	sf::Texture* LeftTexture;
 	sf::Texture* RightTexture;
 
@@ -33,9 +35,9 @@ public:
 
 	Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _LeftColor, sf::Color _RightColor, sf::Texture* _LeftTexture = nullptr, sf::Texture* _RightTexture = nullptr);
 
-	virtual BUTTONSTATE UpdateButton(sf::RenderWindow& Window);
+	BUTTONSTATE UpdateButton(sf::RenderWindow& Window);
 
-	virtual void Draw(sf::RenderWindow& Window);
+	void Draw(sf::RenderWindow& Window);
 
 	void SetID(int _ID);
 
@@ -49,4 +51,7 @@ public:
 
 	bool GetIsBlocked();
 
+	void SetButtonText(sf::String _String, const sf::Font* MainFont, unsigned int Size, sf::Color ButtonTextColor);
+
+	sf::Text GetButtonText();
 };

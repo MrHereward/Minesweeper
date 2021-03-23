@@ -14,15 +14,15 @@ Minesweeper::Minesweeper()
 	TopRectangle->setSize(sf::Vector2f{ 545, 145 });
 	TopRectangle->setFillColor(sf::Color(149, 149, 149));
 
-	Field = { new TextButton ** [10] };
+	Field = { new Button ** [10] };
 
 	for (int i = 0; i < 10; ++i)
 	{
-		Field[i] = { new TextButton * [10] };
+		Field[i] = { new Button * [10] };
 
 		for (int j = 0; j < 10; ++j)
 		{
-			Field[i][j] = { new TextButton(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), L"", &MainFont, 30, sf::Color(0, 0, 0)) };
+			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
 		}
 	}
 }
@@ -50,11 +50,15 @@ void Minesweeper::MainLoop()
 			}
 		}
 
-		//UpdateObjects();
+		UpdateObjects();
+
+		//PlayAgainButton->UpdateButton(Window);
 
 		Window.clear(sf::Color(61, 61, 61));
 
-		//DrawObjects();
+		//PlayAgainButton->Draw(Window);
+
+		DrawObjects();
 
 		Window.display();
 	}
@@ -68,21 +72,21 @@ void Minesweeper::StartGame()
 
 	sf::sleep(sf::milliseconds(200));
 
-	Field = { new TextButton ** [10] };
+	Field = { new Button ** [10] };
 
 	for (int i = 0; i < 10; ++i)
 	{
-		Field[i] = { new TextButton * [10] };
+		Field[i] = { new Button * [10] };
 
 		for (int j = 0; j < 10; ++j)
 		{
-			Field[i][j] = { new TextButton(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), L"", &MainFont, 30, sf::Color(0, 0, 0)) };
+			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
 		}
 	}
 
 	PlantBombs();
 	
-	//SetFieldsID();
+	SetFieldsID();
 }
 
 void Minesweeper::PlantBombs()
@@ -382,10 +386,10 @@ void Minesweeper::DrawObjects()
 		Window.draw(*TopRectangle);
 
 		Window.draw(*ReturnButton);
-		//ReturnTextField->Draw(Window);
+		ReturnTextField->Draw(Window);
 
 		Window.draw(*PlayAgainButton);
-		//PlayAgainTextField->Draw(Window);
+		PlayAgainTextField->Draw(Window);
 
 		GameStateTextField->Draw(Window);
 
@@ -394,7 +398,7 @@ void Minesweeper::DrawObjects()
 			for (int j = 0; j < 10; ++j)
 			{
 				Window.draw(*Field[i][j]);
-				//Window.draw(Field[i][j]->GetButtonText());
+				Window.draw(Field[i][j]->GetButtonText());
 			}
 		}
 
@@ -404,17 +408,17 @@ void Minesweeper::DrawObjects()
 		Window.draw(*TopRectangle);
 
 		Window.draw(*ReturnButton);
-		//ReturnTextField->Draw(Window);
+		ReturnTextField->Draw(Window);
 
 		Window.draw(*PlayAgainButton);
-		//PlayAgainTextField->Draw(Window);
+		PlayAgainTextField->Draw(Window);
 
 		for (int i = 0; i < 10; ++i)
 		{
 			for (int j = 0; j < 10; ++j)
 			{
 				Window.draw(*Field[i][j]);
-				//Window.draw(Field[i][j]->GetButtonText());
+				Window.draw(Field[i][j]->GetButtonText());
 			}
 		}
 
@@ -424,19 +428,19 @@ void Minesweeper::DrawObjects()
 		Window.draw(*TopRectangle);
 		MinesweeperTextField->Draw(Window);
 
-		//DifficultyLevelTextField->Draw(Window);
+		DifficultyLevelTextField->Draw(Window);
 
 		Window.draw(*EasyButton);
-		//EasyTextField->Draw(Window);
+		EasyTextField->Draw(Window);
 
 		Window.draw(*MediumButton);
-		//MediumTextField->Draw(Window);
+		MediumTextField->Draw(Window);
 
 		Window.draw(*HardButton);
-		//HardTextField->Draw(Window);
+		HardTextField->Draw(Window);
 
 		Window.draw(*ExitButton);
-		//ExitTextField->Draw(Window);
+		ExitTextField->Draw(Window);
 
 		break;
 	}

@@ -111,3 +111,21 @@ bool Button::GetIsBlocked()
 {
 	return IsBlocked;
 }
+
+void Button::SetButtonText(sf::String _String, const sf::Font* MainFont, unsigned int Size, sf::Color ButtonTextColor)
+{
+	ButtonText.setString(_String);
+	ButtonText.setFont(*MainFont);
+	ButtonText.setCharacterSize(Size);
+	ButtonText.setFillColor(ButtonTextColor);
+
+	sf::FloatRect textRect = ButtonText.getLocalBounds();
+
+	ButtonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	ButtonText.setPosition(getPosition().x / 2, getPosition().y / 2);
+}
+
+sf::Text Button::GetButtonText()
+{
+	return ButtonText;
+}

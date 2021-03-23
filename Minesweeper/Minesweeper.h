@@ -6,7 +6,6 @@
 #include <vector>
 #include <string>
 #include "Button.h"
-#include "TextButton.h"
 #include "TextField.h"
 
 enum class GAMESTATE : unsigned char
@@ -21,37 +20,37 @@ enum class GAMESTATE : unsigned char
 class Minesweeper
 {
 private:
-	TextButton*** Field;
+	Button*** Field;
 
-	TextButton* PlayAgainButton{ new TextButton(152, 85, 250, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Zagraj ponownie", &MainFont, 30, sf::Color(0, 0, 0)) };
+	Button* PlayAgainButton{ new Button(152, 85, 250, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
 
-	TextButton* EasyButton{ new TextButton(175, 300, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"£atwy", &MainFont, 30, sf::Color(0, 0, 0)) };
+	Button* EasyButton{ new Button(175, 300, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
 
-	TextButton* MediumButton{ new TextButton(175, 400, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Œredni", &MainFont, 30, sf::Color(0, 0, 0)) };
+	Button* MediumButton{ new Button(175, 400, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
 
-	TextButton* HardButton{ new TextButton(175, 500, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Trudny", &MainFont, 30, sf::Color(0, 0, 0)) };
+	Button* HardButton{ new Button(175, 500, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
 
-	TextButton* ExitButton{ new TextButton(175, 600, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"WyjdŸ", &MainFont, 30, sf::Color(0, 0, 0)) };
+	Button* ExitButton{ new Button(175, 600, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
 
-	TextButton* ReturnButton{ new TextButton(5, 5, 85, 35, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Powrót", &MainFont, 20, sf::Color(0, 0, 0)) };
+	Button* ReturnButton{ new Button(5, 5, 85, 35, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
 
-	//TextField* PlayAgainTextField{ new TextField(L"Zagraj ponownie", 178, 90, 30, &MainFont, sf::Color(0, 0, 0)) };
+	TextField* PlayAgainTextField{ new TextField(L"Zagraj ponownie", 178, 90, 30, &MainFont, sf::Color(0, 0, 0)) };
 
 	TextField* GameStateTextField{ new TextField(157, 20, 50, &MainFont, sf::Color(0, 0, 0)) };
 
 	TextField* MinesweeperTextField{ new TextField(L"Saper", 195, 25, 70, &MainFont, sf::Color(0, 0, 0)) };
 
-	//TextField* DifficultyLevelTextField{ new TextField(L"Wybierz poziom trudnoœci:", 60, 200, 40, &MainFont, sf::Color(0, 0, 0)) };
+	TextField* DifficultyLevelTextField{ new TextField(L"Wybierz poziom trudnoœci:", 60, 200, 40, &MainFont, sf::Color(0, 0, 0)) };
 
-	//TextField* EasyTextField{ new TextField(L"£atwy", 240, 307, 30, &MainFont, sf::Color(0, 0, 0)) };
+	TextField* EasyTextField{ new TextField(L"£atwy", 240, 307, 30, &MainFont, sf::Color(0, 0, 0)) };
 
-	//TextField* MediumTextField{ new TextField(L"Œredni", 235, 407, 30, &MainFont, sf::Color(0, 0, 0)) };
+	TextField* MediumTextField{ new TextField(L"Œredni", 235, 407, 30, &MainFont, sf::Color(0, 0, 0)) };
 
-	//TextField* HardTextField{ new TextField(L"Trudny", 230, 507, 30, &MainFont, sf::Color(0, 0, 0)) };
+	TextField* HardTextField{ new TextField(L"Trudny", 230, 507, 30, &MainFont, sf::Color(0, 0, 0)) };
 
-	//TextField* ExitTextField{ new TextField(L"WyjdŸ", 240, 607, 30, &MainFont, sf::Color(0, 0, 0)) };
+	TextField* ExitTextField{ new TextField(L"WyjdŸ", 240, 607, 30, &MainFont, sf::Color(0, 0, 0)) };
 
-	//TextField* ReturnTextField{ new TextField(L"Powrót", 15, 10, 20, &MainFont, sf::Color(0, 0, 0)) };
+	TextField* ReturnTextField{ new TextField(L"Powrót", 15, 10, 20, &MainFont, sf::Color(0, 0, 0)) };
 
 	sf::RenderWindow Window;
 

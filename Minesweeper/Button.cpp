@@ -12,7 +12,7 @@ Button::Button(float x, float y, float Width, float Height, sf::Color _IdleColor
 
 BUTTONSTATE Button::UpdateButton(sf::RenderWindow& Window)
 {
-	if (!IsAvailable || IsBlocked)
+	if (IsBlocked)
 	{
 		return ButtonState;
 	}

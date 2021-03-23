@@ -21,19 +21,19 @@ enum class GAMESTATE : unsigned char
 class Minesweeper
 {
 private:
-	Button*** Field;
+	TextButton*** Field;
 
-	Button* PlayAgainButton{ new Button(152, 85, 250, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
+	TextButton* PlayAgainButton{ new TextButton(152, 85, 250, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Zagraj ponownie", &MainFont, 30, sf::Color(0, 0, 0)) };
 
-	Button* EasyButton{ new Button(175, 300, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
+	TextButton* EasyButton{ new TextButton(175, 300, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"£atwy", &MainFont, 30, sf::Color(0, 0, 0)) };
 
-	Button* MediumButton{ new Button(175, 400, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
+	TextButton* MediumButton{ new TextButton(175, 400, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Œredni", &MainFont, 30, sf::Color(0, 0, 0)) };
 
-	Button* HardButton{ new Button(175, 500, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
+	TextButton* HardButton{ new TextButton(175, 500, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Trudny", &MainFont, 30, sf::Color(0, 0, 0)) };
 
-	Button* ExitButton{ new Button(175, 600, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
+	TextButton* ExitButton{ new TextButton(175, 600, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"WyjdŸ", &MainFont, 30, sf::Color(0, 0, 0)) };
 
-	Button* ReturnButton{ new Button(5, 5, 85, 35, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color::White) };
+	TextButton* ReturnButton{ new TextButton(5, 5, 85, 35, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149), L"Powrót", &MainFont, 20, sf::Color(0, 0, 0)) };
 
 	//TextField* PlayAgainTextField{ new TextField(L"Zagraj ponownie", 178, 90, 30, &MainFont, sf::Color(0, 0, 0)) };
 
@@ -79,14 +79,14 @@ public:
 
 	void PlantBombs();
 
-	//void SetFieldsID();
+	void SetFieldsID();
 
-	//void Move(int x, int y);
+	void Move(int x, int y);
 
-	//void NonunveliedFields();
+	void NonunveliedFields();
 
-	//void UpdateObjects();
+	void UpdateObjects();
 
-	//void DrawObjects();
+	void DrawObjects();
 
 };

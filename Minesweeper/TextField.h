@@ -7,21 +7,15 @@ class TextField
 private:
 	sf::Text Text;
 
-	sf::Font Font;
-
-	sf::String String;
-
-	sf::Color TextColor;
-
-	int CharacterSize;
-
 public:
-	TextField(sf::String _String, float x, float y, int _CharacterSize, sf::Font* Font, sf::Color _TextColor);
+	TextField(int CharacterSize, const sf::Font* Font, sf::Color TextColor);
 
-	TextField(float x, float y, int _CharacterSize, sf::Font* Font, sf::Color _TextColor);
+	TextField(sf::String String, int CharacterSize, const sf::Font* Font, sf::Color TextColor);
+
+	void SetPosition(int x, int y);
 
 	void Draw(sf::RenderWindow& Window);
 
-	void SetString(sf::String _String);
+	void SetString(sf::String String);
 
 };

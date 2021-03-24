@@ -1,23 +1,27 @@
 #include "TextField.h"
 
-TextField::TextField(sf::String _String, float x, float y, int _CharacterSize, sf::Font* Font, sf::Color _TextColor)
-	: String(_String), CharacterSize(_CharacterSize), TextColor(_TextColor)
+TextField::TextField(int CharacterSize, const sf::Font* Font, sf::Color TextColor)
 {
-	Text.setString(String);
-	Text.setPosition(x, y);
-	Text.setFont(*Font);
 	Text.setCharacterSize(CharacterSize);
+	Text.setFont(*Font);
 	Text.setFillColor(TextColor);
 }
 
-TextField::TextField(float x, float y, int _CharacterSize, sf::Font* Font, sf::Color _TextColor)
-	: CharacterSize(_CharacterSize), TextColor(_TextColor)
+TextField::TextField(sf::String String, int CharacterSize, const sf::Font* Font, sf::Color TextColor)
+	: TextField(CharacterSize, Font, TextColor)
 {
 	Text.setString(String);
+}
+
+void TextField::SetPosition(int x, int y)
+{
+	Text.setOrigin
+	(
+		static_cast<int>(Text.getLocalBounds().left + Text.getLocalBounds().width / 2),
+		static_cast<int>(Text.getLocalBounds().top + Text.getLocalBounds().height / 2)
+	);
+
 	Text.setPosition(x, y);
-	Text.setFont(*Font);
-	Text.setCharacterSize(CharacterSize);
-	Text.setFillColor(TextColor);
 }
 
 void TextField::Draw(sf::RenderWindow& Window)
@@ -25,8 +29,9 @@ void TextField::Draw(sf::RenderWindow& Window)
 	Window.draw(Text);
 }
 
-void TextField::SetString(sf::String _String)
+void TextField::SetString(sf::String String)
 {
-	String = { _String };
 	Text.setString(String);
+
+	SetPosition(Text.getPosition().x, Text.getPosition().y);
 }

@@ -1,7 +1,7 @@
 #include "Minesweeper.h"
 
 Minesweeper::Minesweeper()
-	: Window(sf::VideoMode{ 555, 705 }, "Minesweeper", sf::Style::Close), GameState(GAMESTATE::SELECTION)
+	: WindowWidth(550), WindowHeight(700), Window(sf::VideoMode{ WindowWidth, WindowHeight }, "Minesweeper", sf::Style::Close), GameState(GAMESTATE::SELECTION)
 {
 	RedBombTexture.loadFromFile("Bomb.jpg");
 	GrayBombTexture.loadFromFile("Bomb2.jpg");
@@ -14,22 +14,16 @@ Minesweeper::Minesweeper()
 	TopRectangle->setSize(sf::Vector2f{ 545, 145 });
 	TopRectangle->setFillColor(sf::Color(149, 149, 149));
 
-	Field = { new Button ** [10] };
+	PlayAgainButton->SetButtonText(L"Play again", &MainFont, 30, sf::Color(0, 0, 0));
+	EasyButton->SetButtonText(L"Easy", &MainFont, 30, sf::Color(0, 0, 0));
+	MediumButton->SetButtonText(L"Medium", &MainFont, 30, sf::Color(0, 0, 0));
+	HardButton->SetButtonText(L"Hard", &MainFont, 30, sf::Color(0, 0, 0));
+	ExitButton->SetButtonText(L"Exit", &MainFont, 30, sf::Color(0, 0, 0));
+	ReturnButton->SetButtonText(L"Return", &MainFont, 20, sf::Color(0, 0, 0));
 
-	for (int i = 0; i < 10; ++i)
-	{
-		Field[i] = { new Button * [10] };
-
-		for (int j = 0; j < 10; ++j)
-		{
-			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
-		}
-	}
-}
-
-Minesweeper::~Minesweeper()
-{
-	delete[] Field;
+	GameStateTextField->SetPosition(WindowWidth / 2, 50);
+	MinesweeperTextField->SetPosition(WindowWidth / 2, 80);
+	DifficultyLevelTextField->SetPosition(WindowWidth / 2, 200);
 }
 
 void Minesweeper::MainLoop()
@@ -52,11 +46,7 @@ void Minesweeper::MainLoop()
 
 		UpdateObjects();
 
-		//PlayAgainButton->UpdateButton(Window);
-
 		Window.clear(sf::Color(61, 61, 61));
-
-		//PlayAgainButton->Draw(Window);
 
 		DrawObjects();
 
@@ -80,7 +70,7 @@ void Minesweeper::StartGame()
 
 		for (int j = 0; j < 10; ++j)
 		{
-			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
+			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
 		}
 	}
 
@@ -91,36 +81,16 @@ void Minesweeper::StartGame()
 
 void Minesweeper::PlantBombs()
 {
-	std::vector<std::pair<int, int>> Coordinates;
+	std::set<std::pair<int, int>> FieldsWithBomb;
 
-	bool IsTheSame;
-
-	int x;
-	int y;
-
-	for (int i = 0; i < AmountOfBombs; ++i)
+	while (FieldsWithBomb.size() != AmountOfBombs)
 	{
-		do
-		{
-			IsTheSame = { false };
+		FieldsWithBomb.insert(std::make_pair(rand() % 10, rand() % 10));
+	}
 
-			x = { rand() % 10 };
-			y = { rand() % 10 };
-
-			for (const auto& Numbers : Coordinates)
-			{
-				if (Numbers.first == x && Numbers.second == y)
-				{
-					IsTheSame = { true };
-					break;
-				}
-			}
-
-		} while (IsTheSame);
-
-		Coordinates.push_back(std::make_pair(x, y));
-
-		Field[x][y]->SetID(-1);
+	for (const auto& Element : FieldsWithBomb)
+	{
+		Field[Element.first][Element.second]->SetID(10);
 	}
 }
 
@@ -187,9 +157,9 @@ void Minesweeper::Move(int x, int y)
 			Field[x][y]->SetIsBlocked(true);
 
 			Field[x][y]->setTexture(&RedBombTexture);
-			Field[x][y]->setFillColor(sf::Color::White);
+			Field[x][y]->setFillColor(sf::Color(255, 255, 255));
 
-			GameStateTextField->SetString(L"PRZEGRANA");
+			GameStateTextField->SetString(L"You lost");
 
 			GameState = { GAMESTATE::LOSE };
 
@@ -200,7 +170,7 @@ void Minesweeper::Move(int x, int y)
 			Field[x][y]->SetIsBlocked(true);
 
 			Field[x][y]->setFillColor(sf::Color(149, 149, 149));
-			Field[x][y]->SetButtonText(std::to_wstring(Field[x][x]->GetID()), &MainFont, 30, sf::Color(0, 0, 0));
+			Field[x][y]->SetButtonText(std::to_wstring(Field[x][y]->GetID()), &MainFont, 30, sf::Color(0, 0, 0));
 		}
 		else
 		{
@@ -253,13 +223,13 @@ void Minesweeper::Move(int x, int y)
 		}
 	}
 
-	NonunveliedFields();
+	UnblockedFields();
 
 }
 
-void Minesweeper::NonunveliedFields()
+void Minesweeper::UnblockedFields()
 {
-	int AmountOfNonunveliedFields{};
+	int AmountOfUnblockedFields{};
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -267,14 +237,14 @@ void Minesweeper::NonunveliedFields()
 		{
 			if (Field[i][j]->GetIsBlocked() == false)
 			{
-				++AmountOfNonunveliedFields;
+				++AmountOfUnblockedFields;
 			}
 		}
 	}
 
-	if (AmountOfNonunveliedFields == AmountOfBombs)
+	if (AmountOfUnblockedFields == AmountOfBombs)
 	{
-		GameStateTextField->SetString(L"  WYGRANA");
+		GameStateTextField->SetString(L"You won");
 
 		GameState = { GAMESTATE::WIN };
 	}
@@ -293,7 +263,7 @@ void Minesweeper::UpdateObjects()
 			{
 				if (!Field[i][j]->GetIsBlocked() && Field[i][j]->GetID() >= 10)
 				{
-					Field[i][j]->setFillColor(sf::Color::White);
+					Field[i][j]->setFillColor(sf::Color(255, 255, 255));
 					Field[i][j]->setTexture(&GrayBombTexture);
 				}
 			}
@@ -335,13 +305,19 @@ void Minesweeper::UpdateObjects()
 
 					if (Field[i][j]->UpdateButton(Window) == BUTTONSTATE::RIGHTPUSHED)
 					{
-						if (!Field[i][j]->GetIsAvailable())
+						if (Field[i][j]->GetIsAvailable())
 						{
 							Field[i][j]->setTexture(&Flag);
+							Field[i][j]->SetIsAvailable(false);
+
+							sf::sleep(sf::milliseconds(200));
 						}
 						else
 						{
+							Field[i][j]->setTexture(nullptr);
+							Field[i][j]->SetIsAvailable(true);
 
+							sf::sleep(sf::milliseconds(200));
 						}
 					}
 				}
@@ -385,11 +361,8 @@ void Minesweeper::DrawObjects()
 	case GAMESTATE::LOSE:
 		Window.draw(*TopRectangle);
 
-		Window.draw(*ReturnButton);
-		ReturnTextField->Draw(Window);
-
-		Window.draw(*PlayAgainButton);
-		PlayAgainTextField->Draw(Window);
+		ReturnButton->Draw(Window);
+		PlayAgainButton->Draw(Window);
 
 		GameStateTextField->Draw(Window);
 
@@ -407,18 +380,14 @@ void Minesweeper::DrawObjects()
 	case GAMESTATE::MOVE:
 		Window.draw(*TopRectangle);
 
-		Window.draw(*ReturnButton);
-		ReturnTextField->Draw(Window);
-
-		Window.draw(*PlayAgainButton);
-		PlayAgainTextField->Draw(Window);
+		ReturnButton->Draw(Window);
+		PlayAgainButton->Draw(Window);
 
 		for (int i = 0; i < 10; ++i)
 		{
 			for (int j = 0; j < 10; ++j)
 			{
-				Window.draw(*Field[i][j]);
-				Window.draw(Field[i][j]->GetButtonText());
+				Field[i][j]->Draw(Window);
 			}
 		}
 
@@ -430,17 +399,10 @@ void Minesweeper::DrawObjects()
 
 		DifficultyLevelTextField->Draw(Window);
 
-		Window.draw(*EasyButton);
-		EasyTextField->Draw(Window);
-
-		Window.draw(*MediumButton);
-		MediumTextField->Draw(Window);
-
-		Window.draw(*HardButton);
-		HardTextField->Draw(Window);
-
-		Window.draw(*ExitButton);
-		ExitTextField->Draw(Window);
+		EasyButton->Draw(Window);
+		MediumButton->Draw(Window);
+		HardButton->Draw(Window);
+		ExitButton->Draw(Window);
 
 		break;
 	}

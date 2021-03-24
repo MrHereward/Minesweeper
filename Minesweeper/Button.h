@@ -15,9 +15,6 @@ class Button : public sf::RectangleShape
 protected:
 	sf::Text ButtonText{};
 
-	sf::Texture* LeftTexture;
-	sf::Texture* RightTexture;
-
 	sf::Color IdleColor;
 	sf::Color HoverColor;
 	sf::Color LeftColor;
@@ -33,7 +30,7 @@ protected:
 public:
 	Button() = delete;
 
-	Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _LeftColor, sf::Color _RightColor, sf::Texture* _LeftTexture = nullptr, sf::Texture* _RightTexture = nullptr);
+	Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _LeftColor = sf::Color(255, 255, 255), sf::Color _RightColor = sf::Color(255, 255, 255));
 
 	BUTTONSTATE UpdateButton(sf::RenderWindow& Window);
 

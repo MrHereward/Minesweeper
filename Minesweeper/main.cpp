@@ -2,7 +2,7 @@
 
 int	main()
 {
-	Minesweeper* Program{ new Minesweeper() };
-	Program->MainLoop();
+	auto* Game{ new Minesweeper };
+	Game->MainLoop();
 	return 0;
 }

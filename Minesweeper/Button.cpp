@@ -1,11 +1,10 @@
 #include "Button.h"
 
-Button::Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _LeftColor, sf::Color _RightColor, sf::Texture* _LeftTexture, sf::Texture* _RightTexture)
+Button::Button(float x, float y, float Width, float Height, sf::Color _IdleColor, sf::Color _HoverColor, sf::Color _LeftColor, sf::Color _RightColor)
 	: ButtonState(BUTTONSTATE::IDLE), IsBlocked(false), IsAvailable(true),
-	IdleColor(_IdleColor), HoverColor(_HoverColor), LeftColor(_LeftColor), RightColor(_RightColor),
-	LeftTexture(_LeftTexture), RightTexture(_RightTexture)
+	IdleColor(_IdleColor), HoverColor(_HoverColor), LeftColor(_LeftColor), RightColor(_RightColor)
 {
-	setPosition(sf::Vector2f{ x, y });
+	setPosition(x, y);
 	setSize(sf::Vector2f{ Width, Height });
 	setFillColor(IdleColor);
 }
@@ -26,14 +25,14 @@ BUTTONSTATE Button::UpdateButton(sf::RenderWindow& Window)
 	{
 		ButtonState = { BUTTONSTATE::HOVER };
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			ButtonState = { BUTTONSTATE::LEFTPUSHED };
-		}
-
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 		{
 			ButtonState = { BUTTONSTATE::RIGHTPUSHED };
+		}
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			ButtonState = { BUTTONSTATE::LEFTPUSHED };
 		}
 	}
 
@@ -50,26 +49,12 @@ BUTTONSTATE Button::UpdateButton(sf::RenderWindow& Window)
 		break;
 
 	case BUTTONSTATE::LEFTPUSHED:
-		if (LeftTexture)
-		{
-			setTexture(LeftTexture);
-		}
-		else
-		{
-			setFillColor(LeftColor);
-		}
+		setFillColor(LeftColor);
 
 		break;
 
 	case BUTTONSTATE::RIGHTPUSHED:
-		if (RightTexture)
-		{
-			setTexture(RightTexture);
-		}
-		else
-		{
-			setFillColor(RightColor);
-		}
+		setFillColor(RightColor);
 
 		break;
 	}
@@ -80,6 +65,7 @@ BUTTONSTATE Button::UpdateButton(sf::RenderWindow& Window)
 void Button::Draw(sf::RenderWindow& Window)
 {
 	Window.draw(*this);
+	Window.draw(ButtonText);
 }
 
 void Button::SetID(int _ID)
@@ -94,7 +80,7 @@ int Button::GetID()
 
 void Button::SetIsAvailable(bool _IsAvailable)
 {
-	IsAvailable = { IsAvailable };
+	IsAvailable = { _IsAvailable };
 }
 
 bool Button::GetIsAvailable()
@@ -119,10 +105,13 @@ void Button::SetButtonText(sf::String _String, const sf::Font* MainFont, unsigne
 	ButtonText.setCharacterSize(Size);
 	ButtonText.setFillColor(ButtonTextColor);
 
-	sf::FloatRect textRect = ButtonText.getLocalBounds();
+	ButtonText.setOrigin
+	(
+		static_cast<int>(ButtonText.getLocalBounds().left + ButtonText.getLocalBounds().width / 2),
+		static_cast<int>(ButtonText.getLocalBounds().top + ButtonText.getLocalBounds().height / 2)
+	);
 
-	ButtonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-	ButtonText.setPosition(getPosition().x / 2, getPosition().y / 2);
+	ButtonText.setPosition(static_cast<int>(getPosition().x + getSize().x / 2), static_cast<int>(getPosition().y + getSize().y / 2));
 }
 
 sf::Text Button::GetButtonText()

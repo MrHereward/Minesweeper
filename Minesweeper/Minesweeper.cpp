@@ -70,7 +70,7 @@ void Minesweeper::StartGame()
 
 		for (int j = 0; j < 10; ++j)
 		{
-			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
+			Field[i][j] = { new Button(static_cast<float>(j * 50 + (j + 1) * 5), static_cast<float>(i * 50 + (i + 1) * 5 + 150), 50, 50, sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110), sf::Color(110, 110, 110)) };
 		}
 	}
 
@@ -261,6 +261,11 @@ void Minesweeper::UpdateObjects()
 		{
 			for (int j = 0; j < 10; ++j)
 			{
+				if (Field[i][j]->getTexture() == &Flag)
+				{
+					Field[i][j]->setTexture(nullptr);
+				}
+
 				if (!Field[i][j]->GetIsBlocked() && Field[i][j]->GetID() >= 10)
 				{
 					Field[i][j]->setFillColor(sf::Color(255, 255, 255));
@@ -298,9 +303,12 @@ void Minesweeper::UpdateObjects()
 			{
 				if (!Field[i][j]->GetIsBlocked())
 				{
-					if (Field[i][j]->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
+					if (Field[i][j]->GetIsAvailable())
 					{
-						Move(i, j);
+						if (Field[i][j]->UpdateButton(Window) == BUTTONSTATE::LEFTPUSHED)
+						{
+							Move(i, j);
+						}
 					}
 
 					if (Field[i][j]->UpdateButton(Window) == BUTTONSTATE::RIGHTPUSHED)

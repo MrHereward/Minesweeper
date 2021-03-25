@@ -22,7 +22,7 @@ class Minesweeper
 private:
 	Button*** Field{};
 
-	Button* PlayAgainButton{ new Button(152, 85, 250, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
+	Button* PlayAgainButton{ new Button(125, 85, 300, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
 
 	Button* EasyButton{ new Button(175, 300, 200, 50, sf::Color(110, 110, 110), sf::Color(149, 149, 149), sf::Color(149, 149, 149), sf::Color(149, 149, 149)) };
 

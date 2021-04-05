@@ -1,7 +1,7 @@
 #include "Minesweeper.h"
 
 Minesweeper::Minesweeper()
-	: WindowWidth(550), WindowHeight(700), Window(sf::VideoMode{ WindowWidth, WindowHeight }, "Minesweeper", sf::Style::Close), GameState(GAMESTATE::SELECTION)
+	: WindowWidth(555), WindowHeight(700), Window(sf::VideoMode{ WindowWidth, WindowHeight }, "Minesweeper", sf::Style::Close), GameState(GAMESTATE::SELECTION)
 {
 	RedBombTexture.loadFromFile("Bomb.jpg");
 	GrayBombTexture.loadFromFile("Bomb2.jpg");
@@ -11,7 +11,7 @@ Minesweeper::Minesweeper()
 	MainFont.loadFromFile("Oswald-Bold.ttf");
 
 	TopRectangle->setPosition(sf::Vector2f{ 5, 5 });
-	TopRectangle->setSize(sf::Vector2f{ 540, 140 });
+	TopRectangle->setSize(sf::Vector2f{ 545, 145 });
 	TopRectangle->setFillColor(sf::Color(149, 149, 149));
 
 	PlayAgainButton->SetButtonText(L"Play again", &MainFont, 30, sf::Color(0, 0, 0));
